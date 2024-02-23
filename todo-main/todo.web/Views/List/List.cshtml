@@ -1,0 +1,52 @@
+﻿@model TodoListDetails
+
+@{
+    ViewData["Title"] = Model.Name;
+
+}
+
+@section head{
+    <script>
+        breadcrumbs.push({ href: "@Url.Action("GetLists")", title: "@Labels.MyTodoLists" });
+        breadcrumbs.push({ title: '@ViewData["Title"]' });
+    </script>
+}
+
+<details>
+    <summary>@Labels.Add</summary>
+    <div class="wb-frmvld">
+        <form asp-action="AddItem">
+            <div class="form-group">
+                <label class="required" for="label"><span class="field-name">@Labels.Label</span> <strong class="required">(@Labels.Required)</strong></label>
+                <input id="label" name="label" class="form-control" required="required" />
+            </div>
+            <button type="submit" class="btn btn-primary">@Labels.Submit</button>
+        </form>
+    </div>
+</details>
+<details>
+    <summary>@Labels.Rename</summary>
+    <div class="wb-frmvld">
+        <form asp-action="UpdateList">
+            <div class="form-group">
+                <label class="required" for="name"><span class="field-name">@Labels.Name</span> <strong class="required">(@Labels.Required)</strong></label>
+                <input id="name" name="name" class="form-control" required="required" />
+            </div>
+            <button type="submit" class="btn btn-primary">@Labels.Submit</button>
+        </form>
+    </div>
+</details>
+
+<div class="list-group">
+    @foreach (var item in Model.Items)
+    {
+        @if(item.IsComplete)
+        {
+            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item"><del>@item.Label</del></a>
+        }
+        else
+        {
+            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item">@item.Label</a>
+        }
+    }
+</div>

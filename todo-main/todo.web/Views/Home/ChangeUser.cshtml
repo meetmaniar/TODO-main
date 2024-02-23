@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = Labels.ChangeUser;
+}
+
+@section head{
+    <script>
+        breadcrumbs.push({ title: '@Labels.ChangeUser' });
+    </script>
+}
+
+<div class="wb-frmvld">
+    <form asp-action="ChangeUserGet">
+        <div class="form-group">
+            <label class="required" for="username"><span class="field-name">@Labels.Name</span> <strong class="required">(@Labels.Required)</strong></label>
+            <input id="username" name="username" class="form-control" required="required" value="@Html.UserName()" />
+        </div>
+        <button type="submit" class="btn btn-primary">@Labels.Submit</button>
+    </form>
+</div>

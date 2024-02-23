@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="@Html.Language()">
+<head>
+    <title>@ViewData["Title"]</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script>
+        var menuLinks = []; @* Defined in _Menu.cshtml *@
+        var breadcrumbs = [
+            { href: '@Url.Action("Index", "Home")', title: '@Labels.Home' }
+        ];
+    </script>
+    <!--CDTS-->
+    <script type="text/javascript" src="https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/soyutils.js"></script>
+    <script type="text/javascript" src="@($"https://www.canada.ca/etc/designs/canada/cdts/gcweb/rn/cdts/compiled/wet-{Html.Language()}.js")"></script>
+    <script>
+        document.write(wet.builder.refTop({
+            isApplication: true,
+            cdnEnv: 'prod'
+        }));
+    </script>
+
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @await Html.PartialAsync("_Menu")
+    @await RenderSectionAsync("head", false)
+</head>
+<body>
+    <div id="def-top"></div>
+    <script>
+        let appTop = {
+            cdnEnv: 'prod',
+            appName: [{ text: '@Labels.ApplicationMenuHeader', href: 'javascript:;' }],
+            breadcrumbs: breadcrumbs,
+            menuLinks: menuLinks,
+            lngLinks: [{
+                lang: '@(Html.IsEnglish() ? "fr" : "en")',
+                href: '@Html.LanguageLink(Url)',
+                text: '@(Html.IsEnglish() ? "Français" : "English")'
+            }]
+        };
+    </script>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <script>
+            appTop.signOut = [{ href: '@Url.Action("Disconnect", "Home")' }];
+        </script>
+    }
+    <script>
+        var defTop = document.getElementById('def-top');
+        defTop.innerHTML = wet.builder.appTop(appTop);
+    </script>
+    <div class="container">
+        <div class="row">
+            <main role="main" property="mainContentOfPage" class="col-md-12">
+                <h1 id="wb-cont" property="name">@ViewData["Title"]</h1>
+                @if (TempData.ContainsKey("Success"))
+                {
+                    <div class="alert alert-success">
+                        <p>
+                            @TempData["Success"]
+                            <button class="close close-alert" title="@Labels.Close">&cross;</button>
+                        </p>
+                    </div>
+                }
+                <div id="mainContentLoader"><div class="loader" title="@Labels.Loading"></div></div>
+                <div id="mainContent" style="display: none">
+                    @RenderBody()
+                </div>
+                <div id="def-prefooter"></div>
+                <script>
+                    var defPreFooter = document.getElementById("def-prefooter");
+                    defPreFooter.innerHTML = wet.builder.preFooter({
+                        showFeedback: false,
+                        showShare: false
+                    });
+                </script>
+            </main>
+        </div>
+    </div>
+    <div id="def-footer"></div>
+    <script>
+        var defFooter = document.getElementById("def-footer");
+        defFooter.innerHTML = wet.builder.appFooter({
+            showFeatures: false
+        });
+    </script>
+    <script>
+        document.write(wet.builder.refFooter({}));
+    </script>
+    <script>
+        $(document).on('wb-ready.wb', function() {
+            document.getElementById('mainContentLoader').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            document.querySelectorAll('.close-alert').forEach(e => $(e).click(function() {
+                $(this).parents('.alert').fadeOut(500).remove();
+            }));
+        });
+    </script>
+    <script>
+        (function() {
+            $('[data-confirm]').click(function(e) {
+                if(!confirm(this.dataset.confirm)) e.preventDefault();
+            });
+        })();
+    </script>
+    @await RenderSectionAsync("scripts", false)
+</body>
+</html>

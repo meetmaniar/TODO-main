@@ -1,0 +1,43 @@
+﻿@model TodoList[]
+
+@{
+    ViewData["Title"] = Labels.MyTodoLists;
+}
+
+@section head{
+    <script>
+        breadcrumbs.push({ title: '@ViewData["Title"]' });
+    </script>
+}
+
+<details>
+    <summary>@Labels.Add</summary>
+    <div class="wb-frmvld">
+        <form asp-action="AddList">
+            <div class="form-group">
+                <label class="required" for="name"><span class="field-name">@Labels.Name</span> <strong class="required">(@Labels.Required)</strong></label>
+                <input id="name" name="name" class="form-control" required="required" />
+            </div>
+            <button type="submit" class="btn btn-primary">@Labels.Submit</button>
+        </form>
+    </div>
+</details>
+<table class="wb-tables table-striped table-hover table-condensed small">
+    <thead>
+        <tr>
+            <th>@Labels.Name</th>
+            <th><span class="wb-inv">@Labels.Actions</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var list in Model)
+        {
+            <tr>
+                <td><a asp-action="GetList" asp-route-id="@list.Id">@list.Name</a></td>
+                <td>
+                    <a asp-action="DeleteList" asp-route-id="@list.Id">@Labels.Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
