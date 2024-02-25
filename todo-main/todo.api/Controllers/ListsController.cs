@@ -97,7 +97,7 @@ namespace todo.api.Controllers
         {
             var result = await _services.ListServices.UpdateItem(id, listId, model, TodoUser);
             if (result is null) return NotFound();
-            await _services.SaveChangesAsync();
+            await _services.SaveChangesAsync(); // Saving the result in services.
             return Ok(result.AsModel());
         }
 

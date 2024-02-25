@@ -38,18 +38,18 @@ namespace todo.web.Controllers
         [HttpGet("/{culture:regex(fr)}/listes/{listId}/elements/{itemId}/supprimer")]
         public async Task<IActionResult> DeleteItem(int listId, int itemId)
         {
-            var result = await _client.DeleteItem(itemId, listId);
-            SetSuccessMessage();
-            return RedirectToAction(nameof(GetList), new { id = itemId });
+            var result = await _client.DeleteItem(itemId, listId);  // Deleting the item.
+            SetSuccessMessage();    // Setting the success message.
+            return RedirectToAction(nameof(GetList), new { id = itemId });  // Returning the Task<IActionResult> with id of the deleted item.
         }
 
         [HttpGet("/{culture:regex(en)}/lists/{id}/delete")]
         [HttpGet("/{culture:regex(fr)}/listes/{id}/supprimer")]
         public async Task<IActionResult> DeleteList(int id)
         {
-            var result = await _client.DeleteList(id);
-            SetSuccessMessage();
-            return RedirectToAction(nameof(GetList), null);
+            var result = await _client.DeleteList(id);  // Deleting the list.
+            SetSuccessMessage();    // Setting the success message.
+            return RedirectToAction(nameof(GetList)); // Returning the Task<IActionResult>.
         }
 
         [HttpGet("/{culture:regex(en)}/lists")]
