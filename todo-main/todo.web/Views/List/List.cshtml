@@ -37,16 +37,31 @@
     </div>
 </details>
 
-<div class="list-group">
+<table class="wb-tables table-striped table-hover table-condensed small">
+    <thead>
+        <tr>
+            <th>@Labels.Name</th>
+            <th><span class="wb-inv">@Labels.Actions</span></th>
+        </tr>
+    </thead>
     @foreach (var item in Model.Items)
     {
-        @if(item.IsComplete)
-        {
-            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item"><del>@item.Label</del></a>
-        }
-        else
-        {
-            <a asp-action="ToggleItem" asp-route-itemId="@item.Id" class="list-group-item">@item.Label</a>
-        }
+        <tbody>
+            <tr>
+                <td>
+                    @if(item.IsComplete)
+                    {
+                        <a asp-action="ToggleItem" asp-route-itemId="@item.Id"><del>@item.Label</del></a>
+                    }
+                    else
+                    {
+                        <a asp-action="ToggleItem" asp-route-itemId="@item.Id">@item.Label</a>
+                    }
+                </td>
+                <td>
+                    <a asp-action="DeleteItem" asp-route-itemId="@item.Id" asp-route-listId=@Model.Id>@Labels.Delete</a>    <!-- Adding the DeleteItem action -->
+                </td>
+            </tr>
+        </tbody>
     }
-</div>
+</table>

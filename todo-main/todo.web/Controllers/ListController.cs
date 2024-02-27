@@ -40,7 +40,7 @@ namespace todo.web.Controllers
         {
             var result = await _client.DeleteItem(itemId, listId);  // Deleting the item.
             SetSuccessMessage();    // Setting the success message.
-            return RedirectToAction(nameof(GetList), new { id = itemId });  // Returning the Task<IActionResult> with id of the deleted item.
+            return RedirectToAction(nameof(GetList), new { id = listId });  // Returning the Task<IActionResult> with listId so that the page can be redirected to the selected list.
         }
 
         [HttpGet("/{culture:regex(en)}/lists/{id}/delete")]
@@ -49,7 +49,7 @@ namespace todo.web.Controllers
         {
             var result = await _client.DeleteList(id);  // Deleting the list.
             SetSuccessMessage();    // Setting the success message.
-            return RedirectToAction(nameof(GetList)); // Returning the Task<IActionResult>.
+            return RedirectToAction(nameof(GetLists)); // Returning the Task<IActionResult> to redirect to the My TODO Lists.
         }
 
         [HttpGet("/{culture:regex(en)}/lists")]
